@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Handscribed"
+               xmlns:utils="clr-namespace:Handscribed.WpfUtils"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <utils:SubtractOneConverter x:Key="SubtractOneConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Application.Resources>
 </Application>
