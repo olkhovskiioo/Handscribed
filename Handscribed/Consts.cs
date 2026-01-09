@@ -16,5 +16,8 @@ namespace Handscribed
 
         public const string TRAIN_DATA_TYPE_2_FILE_NAME = "t10k-images-idx3-ubyte";
         public const string TRAIN_LABELS_TYPE_2_FILE_NAME = "t10k-labels-idx1-ubyte";
+
+        public const int MNIST_IMAGE_WIDGHT = 28;
+        public const int MNIST_IMAGE_HEIGHT = 28;
     }
 }
