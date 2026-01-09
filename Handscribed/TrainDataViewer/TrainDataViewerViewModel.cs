@@ -7,6 +7,7 @@ using System.Windows;
 using System.IO;
 using Handscribed.WpfUtils;
 using System.Collections.ObjectModel;
+using System;
 
 namespace Handscribed.TrainDataViewer
 {
@@ -37,6 +38,8 @@ namespace Handscribed.TrainDataViewer
                 SelectedMNISTOption = Properties.Settings.Default.TrainingDataType;
 
         }
+
+        public event EventHandler DataSelected;
         public ObservableCollection<string> MNISTOptions => _MNISTOptions; 
         public string SelectedMNISTOption
         {
@@ -46,6 +49,7 @@ namespace Handscribed.TrainDataViewer
                 _selectedMNISTOption = value;
                 OnPropertyChanged();
                 SetData(value, _folderName);
+                DataSelected?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -96,6 +100,7 @@ namespace Handscribed.TrainDataViewer
             get => _isDataLoaded;
             set => SetField(ref _isDataLoaded, value);
         }
+        public string FolderName => _folderName;
 
         private void SelectDataFolder(object parameter)
         {
@@ -189,7 +194,6 @@ namespace Handscribed.TrainDataViewer
                 Properties.Settings.Default.TrainingDataPath = _folderName;
 
             Properties.Settings.Default.TrainingDataType = SelectedMNISTOption;
-            Properties.Settings.Default.Save();
         }
     }
 }

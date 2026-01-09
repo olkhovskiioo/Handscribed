@@ -11,6 +11,13 @@
         Closing="Window_Closing">
 
     <Grid>
-        <viewer:TrainDataViewer x:Name="TrainDataViewer"/>
+        <TabControl x:Name="mainTabControl">
+            <TabItem Header="select data" x:Name="selectDataTab">
+                <viewer:TrainDataViewer x:Name="TrainDataViewer"/>
+            </TabItem>
+
+            <TabItem Header="train" x:Name="trainTab" IsEnabled="False">
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
