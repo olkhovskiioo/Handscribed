@@ -7,10 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
               d:DataContext="{d:DesignInstance local:TrainDataViewerViewModel}">
-    <UserControl.DataContext>
-        <local:TrainDataViewerViewModel />
-    </UserControl.DataContext>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

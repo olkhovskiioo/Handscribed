@@ -23,7 +23,7 @@ namespace Handscribed.TrainDataViewer
         public TrainDataViewer()
         {
             InitializeComponent();
-            DataContext = new TrainDataViewerViewModel();
+            DataContext = new TrainDataViewerViewModel(App.Repository);
         }
     }
 }

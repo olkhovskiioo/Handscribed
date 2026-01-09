@@ -9,6 +9,7 @@ namespace Handscribed
     /// </summary>
     public partial class App : Application
     {
+        public static IRepositoryInitializer Repository { get; } = new Repository();
     }
 
 }

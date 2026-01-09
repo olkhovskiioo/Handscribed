@@ -13,7 +13,7 @@ namespace Handscribed.TrainDataViewer
 {
     public class TrainDataViewerViewModel : ObservableObject
     {
-        private List<MnistImage> _mnistData;
+        private IRepositoryInitializer _repository;
         private int _currentIndex;
         private BitmapSource _currentImage;
         private int _imageCount;
@@ -24,8 +24,9 @@ namespace Handscribed.TrainDataViewer
         private string _selectedMNISTOption;
         private string _folderName;
 
-        public TrainDataViewerViewModel()
+        public TrainDataViewerViewModel(IRepositoryInitializer repository)
         {
+            _repository = repository;
             LoadCommand = new RelayCommand(SelectDataFolder);
             PreviousCommand = new RelayCommand(PreviousImage, CanNavigatePrevious);
             NextCommand = new RelayCommand(NextImage, CanNavigateNext);
@@ -52,7 +53,6 @@ namespace Handscribed.TrainDataViewer
                 DataSelected?.Invoke(this, EventArgs.Empty);
             }
         }
-
 
         public ICommand LoadCommand { get; }
         public ICommand PreviousCommand { get; }
@@ -125,9 +125,9 @@ namespace Handscribed.TrainDataViewer
 
         private void SetData(string type, string folder)
         {
-            var (dataPath, labelsPath) = GetDataFilePath(folder); 
-            _mnistData = MnistDataLoader.LoadImages(dataPath, labelsPath);
-            ImageCount = _mnistData.Count;
+            var (dataPath, labelsPath) = GetDataFilePath(folder);
+            _repository.SetTrainingData(MnistDataLoader.LoadImages(dataPath, labelsPath));
+            ImageCount = _repository.TrainingData.Count;
             IsDataLoaded = true;
             ShowImage(0);
         }
@@ -147,14 +147,14 @@ namespace Handscribed.TrainDataViewer
         }
         private void ShowImage(int index)
         {
-            if (_mnistData == null || index < 0 || index >= _mnistData.Count)
+            if (_repository.TrainingData == null || index < 0 || index >= _repository.TrainingData.Count)
                 return;
 
             _currentIndex = index;
             OnPropertyChanged(nameof(CurrentIndex));
-            var data = _mnistData[index];
+            var data = _repository.TrainingData[index];
 
-            CurrentIndexText = $"{index} / {_mnistData.Count - 1}";
+            CurrentIndexText = $"{index} / {_repository.TrainingData.Count - 1}";
             CurrentLabel = data.Label.ToString();
             CurrentImage = BitmapConverter.ConvertToBitmap(data);
 
@@ -172,12 +172,12 @@ namespace Handscribed.TrainDataViewer
 
         private bool CanNavigatePrevious(object parameter)
         {
-            return _mnistData != null && _currentIndex > 0;
+            return _repository.TrainingData != null && _currentIndex > 0;
         }
 
         private void NextImage(object parameter)
         {
-            if (_currentIndex < _mnistData.Count - 1)
+            if (_currentIndex < _repository.TrainingData.Count - 1)
             {
                 ShowImage(_currentIndex + 1);
             }
@@ -185,7 +185,7 @@ namespace Handscribed.TrainDataViewer
 
         private bool CanNavigateNext(object parameter)
         {
-            return _mnistData != null && _currentIndex < _mnistData.Count - 1;
+            return _repository.TrainingData != null && _currentIndex < _repository.TrainingData.Count - 1;
         }
 
         internal void Save()
