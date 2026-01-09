@@ -1,5 +1,6 @@
 ﻿using Handscribed.DataLoader;
 using Handscribed.Dataset;
+using Handscribed.TrainDataViewer;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,11 @@ namespace Handscribed
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ((TrainDataViewerViewModel)TrainDataViewer.DataContext).Save();
         }
     }
 }

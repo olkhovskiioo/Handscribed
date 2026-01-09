@@ -29,6 +29,13 @@ namespace Handscribed.TrainDataViewer
             PreviousCommand = new RelayCommand(PreviousImage, CanNavigatePrevious);
             NextCommand = new RelayCommand(NextImage, CanNavigateNext);
             _MNISTOptions = new ObservableCollection<string>() { Consts.TRAIN_DATA_TYPE_1, Consts.TRAIN_DATA_TYPE_2 };
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.TrainingDataPath) && Path.Exists(Properties.Settings.Default.TrainingDataPath))
+                _folderName = Properties.Settings.Default.TrainingDataPath;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.TrainingDataType))
+                SelectedMNISTOption = Properties.Settings.Default.TrainingDataType;
+
         }
         public ObservableCollection<string> MNISTOptions => _MNISTOptions; 
         public string SelectedMNISTOption
@@ -174,6 +181,15 @@ namespace Handscribed.TrainDataViewer
         private bool CanNavigateNext(object parameter)
         {
             return _mnistData != null && _currentIndex < _mnistData.Count - 1;
+        }
+
+        internal void Save()
+        {
+            if (!string.IsNullOrEmpty(_folderName) && Path.Exists(_folderName))
+                Properties.Settings.Default.TrainingDataPath = _folderName;
+
+            Properties.Settings.Default.TrainingDataType = SelectedMNISTOption;
+            Properties.Settings.Default.Save();
         }
     }
 }
